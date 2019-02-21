@@ -35,9 +35,9 @@ function displayRecords(array) {
     
     for (row = 0; row < data.length; row++)
     {
-        for(col = 0; col < data[row].length; col++)
+        for(col = 1; col < data[row].length; col++)
         {
-            if (data[row][col] && data[row][col].length > maxSizes[col]){
+            if (data[row][col].length > maxSizes[col]){
                 maxSizes[col] = Math.min(data[row][col].length, sizeLimits[col]);
             }
         }
