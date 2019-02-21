@@ -74,7 +74,7 @@ function show(options) {
 
 function loadTodoComments(files) {
     const Regex = {
-        todo: /\/{2}\s*todo\s*:*\s*(?:(.*);\s*(.*|\d{4}-\d{2}-\d{2});\s*(.*)|(.*))/i,
+        todo: /\/{2}\s*todo\s*:*\s*(?:(.*?)\s*;\s*(.*|\d{4}-\d{2}-\d{2});\s*(.*)|(.*))/i,
         importance: /.*?(!+)/,
         fileName: /\/(.*\.js)/i
     };
@@ -123,8 +123,9 @@ function importantFilter() {
 }
 
 function userFilter(user) {
+    user = user.toLowerCase();
     return function (todo) {
-        return todo.user == user;
+        return todo.user.toLowerCase().startsWith(user);
     }
 }
 
