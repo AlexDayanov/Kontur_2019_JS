@@ -162,9 +162,12 @@ function sortBy(fieldName) {
                     return 1
                 }
 
-                return todo2.user > todo1.user ? -1
-                    : todo2.user < todo1.user ? 1
-                        : 0
+                let user1 = todo1.user.toLowerCase();
+                let user2 = todo2.user.toLowerCase();
+
+                return user2 > user1 ? -1
+                    : user2 < user1 ? 1
+                        : 0;
             }
         }
         case 'date': {
