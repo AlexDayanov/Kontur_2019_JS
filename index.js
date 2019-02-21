@@ -59,8 +59,6 @@ function parseInput(input) {
 function show(options) {
     const filePaths = getAllFilePathsWithExtension(process.cwd(), 'js');
 
-    console.log(options);
-
     let todos = loadTodoComments(filePaths);
 
     if (options && options.filter) {
@@ -70,8 +68,6 @@ function show(options) {
     if (options && options.sort) {
         todos.sort(options.sort(options.args))
     }
-
-    console.log(todos);
 
     displayRecords(todos);
 }
@@ -136,7 +132,6 @@ function dateFilter(date) {
     
     date = prepareDate(date);
 
-    console.log(date)
     return function (todo) {
         return prepareDate(todo.date) >= date;
     }
