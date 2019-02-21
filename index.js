@@ -121,4 +121,17 @@ function importantFilter(){
     }
 }
 
+function userFilter(user){
+    return function(todo){
+        return todo.user == user;
+    }
+}
+
+function defaultFilter(){
+    return function(todo){
+        return true;
+    }
+}
+
+
 // TODO you can do it!
