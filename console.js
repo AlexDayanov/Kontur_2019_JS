@@ -3,7 +3,7 @@ const readline = require('readline');
 const tabFormat = {
     delimiter: '|',
     spacer: '  ',
-    underline: '_',
+    underline: '-',
     terminator: '...',
 
     maxLength: {
@@ -49,7 +49,7 @@ function displayRecords(array) {
 
     let header = getStrings([tabFormat.header], normalizedLengths);
     let strings = getStrings(array, normalizedLengths);
-    let underline = ['-'.repeat(strings[0].length)];
+    let underline = ['-'.repeat(header[0].length)];
 
     let table = header.concat(underline.concat(strings));
 
@@ -107,7 +107,7 @@ function getStrings(array, normalizedLengths) {
         let str = f`  ${record.importance}  |  ${record.user}  |  ${record.date}  |  ${record.comment}  |  ${record.fileName}`;
         //Запись строк в массив
         strings.push(str);
-    })
+    });
     return strings;
 }
 
