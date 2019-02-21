@@ -61,8 +61,6 @@ function show(options) {
 
     let todos = loadTodoComments(filePaths);
 
-    console.log(todos);
-
     if (options && options.filter) {
         todos = todos.filter(options.filter(options.args))
     }
