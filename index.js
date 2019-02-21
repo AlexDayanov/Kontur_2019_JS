@@ -60,9 +60,13 @@ function parseInput(input){
 function show(options) {
     const filePaths = getAllFilePathsWithExtension(process.cwd(), 'js');
 
-    let todos = loadTodoComments(filePaths);
+    console.log(options);
+    let filter = options && options.filter
+        ? options.filter(options.args)
+        : defaultFilter;
 
-    console.log(todos);
+    let todos = loadTodoComments(filePaths)
+        .filter(filter);
 
     displayRecords(todos);
 }
@@ -111,6 +115,10 @@ function loadTodoComments(files) {
     return arr;
 }
 
-
+function importantFilter(){
+    return function(todo){
+        return todo.importance.length > 0;
+    }
+}
 
 // TODO you can do it!
