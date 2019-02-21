@@ -1,31 +1,79 @@
+const {readLine, displayRecords} = require('./console');
 const {getAllFilePathsWithExtension, readFile, getFileName} = require('./fileSystem');
-const {readLine, readline, displayRecords} = require('./console');
-const filePaths = getAllFilePathsWithExtension(process.cwd(), 'js');
-const Regex = {
-    todo: /\/{2}\s*todo\s*:*\s*(?:(.*);\s*(.*|\d{4}-\d{2}-\d{2});\s*(.*)|(.*))/i,
-    importance: /.*?(!+)/,
-    fileName: /\/(.*\.js)/i
-};
-const maxStringLength = {
-    importance: 1,
-    user: 10,
-    date: 10,
-    comment: 50,
-    fileName: 15
+
+console.log('Please, write your command!');
+
+readLine(input =>     
+    {
+        let command = parseInput(input);
+
+        switch (command.name){
+            case 'exit':
+                process.exit(0);
+                break;
+            case 'show':
+                show();
+                break;            
+            case 'important':
+                show({ filter: importantFilter });
+                break;            
+            case 'user':
+                show({ filter: userFilter, args: command.user });
+                break;            
+            case 'sort':
+                show({ sort: sorting, args: command.user });
+                break;            
+            case 'date':
+            show({ filter: dateFilter, args: command.date });
+                break;            
+            default:
+                console.log('wrong command');
+                break;
+        }
+    });
+
+function parseInput(input){
+    let parts = input.split(' ').map(c => c.trim());
+
+    if (parts.length == 1){
+        if (parts[0] == 'show'){
+            return { name: 'show' }
+        }
+        else if (parts[0] == 'important'){
+            return { name: 'important' }
+        }
+    } if (parts.length == 2){
+        if (parts[0] == 'user'){
+            return { name: 'user', user: parts[1] }
+        }
+        if (parts[0] == 'sort'){
+            return { name: 'sort', direction: parts[1] }
+        }
+        if (parts[0] == 'date'){
+            return { name: 'date', date: parts[1] }
+        }
+    }
+
+    return {};
 }
 
-app();
+function show(options) {
+    const filePaths = getAllFilePathsWithExtension(process.cwd(), 'js');
 
-function app() {
-    console.log('Please, write your command!');
-    readLine(processCommand);
+    let todos = loadTodoComments(filePaths);
+
+    console.log(todos);
+
+    displayRecords(todos);
 }
 
-function show() {
-    displayRecords (createTodoArray(filePaths));
-}
-
-function createTodoArray(files) {
+function loadTodoComments(files) {   
+    const Regex = {
+        todo: /\/{2}\s*todo\s*:*\s*(?:(.*);\s*(.*|\d{4}-\d{2}-\d{2});\s*(.*)|(.*))/i,
+        importance: /.*?(!+)/,
+        fileName: /\/(.*\.js)/i
+    };
+    
     let records = [];
     files.forEach(fileName => {
         lines = getTodoLines(fileName);
@@ -63,18 +111,6 @@ function createTodoArray(files) {
     return arr;
 }
 
-function processCommand(command) {
-    switch (command) {
-        case 'exit':
-            process.exit(0);
-            break;
-        case 'show':
-            show();
-            break;
-        default:
-            console.log('wrong command');
-            break;
-    }
-}
+
 
 // TODO you can do it!
