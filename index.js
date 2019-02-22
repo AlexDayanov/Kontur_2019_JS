@@ -1,5 +1,5 @@
-const { readLine, displayRecords } = require('./console');
-const { getAllFilePathsWithExtension, readFile, getFileName } = require('./fileSystem');
+const {readLine, displayRecords} = require('./console');
+const {getAllFilePathsWithExtension, readFile, getFileName} = require('./fileSystem');
 
 console.log('Please, write your command!');
 
@@ -14,16 +14,16 @@ readLine(input => {
             show();
             break;
         case 'important':
-            show({ filter: importantFilter });
+            show({filter: importantFilter});
             break;
         case 'user':
-            show({ filter: userFilter, args: command.args });
+            show({filter: userFilter, args: command.args});
             break;
         case 'sort':
-            show({ sort: sortBy, args: command.args });
+            show({sort: sortBy, args: command.args});
             break;
         case 'date':
-            show({ filter: dateFilter, args: command.args });
+            show({filter: dateFilter, args: command.args});
             break;
         default:
             console.log('wrong command');
@@ -34,15 +34,26 @@ readLine(input => {
 function parseInput(input) {
     const simpleCommands = ['exit', 'show', 'important'];
     const complexCommands = ['user', 'sort', 'date'];
+    const complexParams = [, ['importance', 'user', 'date'],];
+
+    const commandValid = function (parts) {
+        if (complexCommands.includes(parts[0])) {
+            i = complexCommands.indexOf(parts[0]);
+            params = complexParams[i];
+            return params ? params.includes(parts[1]) : true
+        }
+    }
 
     let parts = input.split(' ').map(c => c.trim());
 
     if (parts.length == 1 && simpleCommands.includes(parts[0])) {
-        return { 
-            name: parts[0] }
-    } else if (parts.length == 2 && complexCommands.includes(parts[0])) {
-        return { 
-            name: parts[0], args: parts[1] }
+        return {
+            name: parts[0]
+        }
+    } else if (parts.length == 2 && commandValid(parts)) {
+        return {
+            name: parts[0], args: parts[1]
+        }
     }
 
     return {};
@@ -94,7 +105,7 @@ function loadTodoComments(files) {
         let file = getFileName(record.fileName);
 
         return {
-            importance: importance ? importance[1] : '', // TODO Alex ; 1234-56-78; Нужно что-то сделать с этим костылём!!!!
+            importance: importance ? importance[1] : '',
             user: ret(content[1]),
             date: ret(content[2]),
             comment: ret(content[3], content[4]),
@@ -122,17 +133,17 @@ function userFilter(user) {
 }
 
 function dateFilter(date) {
-    
+
     date = prepareDate(date);
 
     return function (todo) {
         return prepareDate(todo.date) >= date;
     }
 
-    function prepareDate(d){
+    function prepareDate(d) {
         return d
             .replace(/-/g, '')
-            .padEnd(8,'0')
+            .padEnd(8, '0')
             .substring(0, 8);
     }
 }
@@ -179,7 +190,6 @@ function sortBy(fieldName) {
         }
     }
 }
-
 
 
 // TODO you can do it!
