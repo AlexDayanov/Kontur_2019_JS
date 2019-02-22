@@ -17,13 +17,13 @@ readLine(input => {
             show({ filter: importantFilter });
             break;
         case 'user':
-            show({ filter: userFilter, args: command.user });
+            show({ filter: userFilter, args: command.args });
             break;
         case 'sort':
-            show({ sort: sortBy, args: command.fieldName });
+            show({ sort: sortBy, args: command.args });
             break;
         case 'date':
-            show({ filter: dateFilter, args: command.date });
+            show({ filter: dateFilter, args: command.args });
             break;
         default:
             console.log('wrong command');
@@ -32,28 +32,17 @@ readLine(input => {
 });
 
 function parseInput(input) {
+    const simpleCommands = ['exit', 'show', 'important'];
+    const complexCommands = ['user', 'sort', 'date'];
+
     let parts = input.split(' ').map(c => c.trim());
 
-    if (parts.length == 1) {
-        if (parts[0] == 'exit') {
-            return { name: 'exit' }
-        }
-        else if (parts[0] == 'show') {
-            return { name: 'show' }
-        }
-        else if (parts[0] == 'important') {
-            return { name: 'important' }
-        }
-    } if (parts.length == 2) {
-        if (parts[0] == 'user') {
-            return { name: 'user', user: parts[1] }
-        }
-        if (parts[0] == 'sort') {
-            return { name: 'sort', fieldName: parts[1] }
-        }
-        if (parts[0] == 'date') {
-            return { name: 'date', date: parts[1] }
-        }
+    if (parts.length == 1 && simpleCommands.includes(parts[0])) {
+        return { 
+            name: parts[0] }
+    } else if (parts.length == 2 && complexCommands.includes(parts[0])) {
+        return { 
+            name: parts[0], args: parts[1] }
     }
 
     return {};
