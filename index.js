@@ -110,7 +110,7 @@ function loadTodoComments(files) {
             date: ret(content[2]),
             comment: ret(content[3], content[4]),
             fileName: ret(file)
-        }
+        };
 
         function ret(arg1, arg2) {
             return arg1 ? arg1 : (arg2 ? arg2 : '')
