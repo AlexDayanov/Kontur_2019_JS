@@ -35,7 +35,10 @@ function parseInput(input) {
     let parts = input.split(' ').map(c => c.trim());
 
     if (parts.length == 1) {
-        if (parts[0] == 'show') {
+        if (parts[0] == 'exit') {
+            return { name: 'exit' }
+        }
+        else if (parts[0] == 'show') {
             return { name: 'show' }
         }
         else if (parts[0] == 'important') {
