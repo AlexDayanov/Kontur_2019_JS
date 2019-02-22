@@ -16,13 +16,18 @@ function readLine(callback) {
 //Принимает массив объектов-записей и выводит их в консоль
 function displayRecords(array) {
     let sizeLimits = [1, 10, 10, 50, 15];
-    let maxSizes = [1,0,0,0,0]
+    let maxSizes = [1,4,4,7,8]
     let data = 
     [
         ['!', 'user', 'date', 'comment', 'fileName']
     ]
    
     array.forEach(element => {
+        recalcMaxSize(1, element.user);
+        recalcMaxSize(2, element.date);
+        recalcMaxSize(3, element.comment);
+        recalcMaxSize(4, element.fileName);
+
         data.push(
             [
                 element.importance.length > 0 ? '!' : '',
@@ -32,16 +37,6 @@ function displayRecords(array) {
                 element.fileName,
             ]);
     });
-    
-    for (row = 0; row < data.length; row++)
-    {
-        for(col = 1; col < data[row].length; col++)
-        {
-            if (data[row][col].length > maxSizes[col]){
-                maxSizes[col] = Math.min(data[row][col].length, sizeLimits[col]);
-            }
-        }
-    }
     
     let result = '';
     for (row = 0; row < data.length; row++)
@@ -63,6 +58,12 @@ function displayRecords(array) {
     }
     
     console.log(result);
+
+    function recalcMaxSize(index, value){
+        if (value.length > maxSizes[index]){
+            maxSizes[index] = Math.min(sizeLimits[index], value.length);
+        } 
+    }
 
     function formatCell(value, sizeLimit){
         let v = value ? value : '';
