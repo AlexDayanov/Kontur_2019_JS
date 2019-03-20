@@ -16,12 +16,12 @@ function readLine(callback) {
 //Принимает массив объектов-записей и выводит их в консоль
 function displayRecords(array) {
     let sizeLimits = [1, 10, 10, 50, 15];
-    let maxSizes = [1,4,4,7,8]
-    let data = 
-    [
-        ['!', 'user', 'date', 'comment', 'fileName']
-    ]
-   
+    let maxSizes = [1, 4, 4, 7, 8]
+    let data =
+        [
+            ['!', 'user', 'date', 'comment', 'fileName']
+        ]
+
     array.forEach(element => {
         recalcMaxSize(1, element.user);
         recalcMaxSize(2, element.date);
@@ -37,47 +37,51 @@ function displayRecords(array) {
                 element.fileName,
             ]);
     });
-    
+
     let result = '';
-    for (row = 0; row < data.length; row++)
-    {
+    for (row = 0; row < data.length; row++) {
         let outCells = [];
-    
-        for(col = 0; col < data[row].length; col++)
-        {
+
+        for (col = 0; col < data[row].length; col++) {
             outCells.push(formatCell(data[row][col], maxSizes[col]));
         }
-    
+
         let outRow = formatRow(outCells);
-    
+
         result += outRow;
 
-        if (row == 0 || row == data.length-1){
-            result += '-'.repeat(outRow.length-1)+'\n';
+        if (row == 0 || row == data.length - 1) {
+            result += '-'.repeat(outRow.length - 1) + '\n';
         }
     }
-    
+
     console.log(result);
 
-    function recalcMaxSize(index, value){
-        if (value.length > maxSizes[index]){
+    function recalcMaxSize(index, value) {
+        if (value.length > maxSizes[index]) {
             maxSizes[index] = Math.min(sizeLimits[index], value.length);
-        } 
+        }
+
+        // if (value.length > maxSizes[index]) {
+        //     maxSizes[index] = value.length > sizeLimits[index]
+        //     ? sizeLimits[index]
+        //     : value.length
+        // }
     }
 
-    function formatCell(value, sizeLimit){
+    function formatCell(value, sizeLimit) {
         let v = value ? value : '';
-    
+
         v = v.length <= sizeLimit
             ? v.padEnd(sizeLimit)
             : v.substring(0, sizeLimit - 3) + '...'
 
         return `  ${v}  `;
-    }    
-    
-    function formatRow(values){
+    }
+
+    function formatRow(values) {
         return values.join('|') + '\n';
-    }    
+    }
 }
 
 module.exports = {

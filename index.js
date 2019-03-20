@@ -33,16 +33,11 @@ readLine(input => {
 
 function parseInput(input) {
     const simpleCommands = ['exit', 'show', 'important'];
-    const complexCommands = ['user', 'sort', 'date'];
-    const complexParams = [, ['importance', 'user', 'date'],];
-
-    const commandValid = function (parts) {
-        if (complexCommands.includes(parts[0])) {
-            i = complexCommands.indexOf(parts[0]);
-            params = complexParams[i];
-            return params ? params.includes(parts[1]) : true
-        }
-    }
+    const complexCommands = {
+        user: (a) => /\S/.test(a),
+        sort: (a) => ['importance', 'user', 'date'].includes(a),
+        date: (a) => /\d{4}/.test(a)
+    };
 
     let parts = input.split(' ').map(c => c.trim());
 
@@ -50,7 +45,7 @@ function parseInput(input) {
         return {
             name: parts[0]
         }
-    } else if (parts.length == 2 && commandValid(parts)) {
+    } else if (parts.length == 2 && complexCommands.hasOwnProperty(parts[0]) && complexCommands[parts[0]](parts[1])) {
         return {
             name: parts[0], args: parts[1]
         }
